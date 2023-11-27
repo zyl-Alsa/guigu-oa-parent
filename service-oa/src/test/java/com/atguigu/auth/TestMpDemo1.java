@@ -2,12 +2,16 @@ package com.atguigu.auth;
 
 import com.atguigu.auth.mapper.SysRoleMapper;
 import com.atguigu.model.system.SysRole;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
+
+//增删改查
 
 @SpringBootTest
 public class TestMpDemo1 {
@@ -55,5 +59,36 @@ public class TestMpDemo1 {
     @Test
     public void deleteId(){
         int rows = mapper.deleteById(2);
+    }
+
+    // 批量删除
+    @Test
+    public void testDeleteBatchIds() {
+        // 删除的记录ID为1和2。
+        int result = mapper.deleteBatchIds(Arrays.asList(1, 2));
+        System.out.println(result);
+    }
+
+    // 条件查询(MyBatis-Plus条件构造器)
+    @Test
+    public void testQuery1() {
+        // 创建QueryWrapper对象，调用方法封装条件
+        QueryWrapper<SysRole> wrapper = new QueryWrapper<>();
+        // eq表示等于，表示查询role_name字段值为"总经理"的记录
+        wrapper.eq("role_name","总经理");
+        // 调用mapper对象的selectList方法，将wrapper对象作为参数传递给该方法。该方法会根据提供的查询条件，从数据库中查询符合条件的记录，并将结果返回给list变量。
+        List<SysRole> list = mapper.selectList(wrapper);
+        System.out.println(wrapper);
+    }
+
+    @Test
+    public void testQuery2() {
+        // 创建LambdaQueryWrapper 对象，调用方法封装条件
+        LambdaQueryWrapper <SysRole> wrapper = new LambdaQueryWrapper<>();
+        // eq表示等于，SysRole::getRoleName是Lambda表达式，表示获取SysRole对象的roleName字段的值，"总经理"是要匹配的值
+        wrapper.eq(SysRole::getRoleName,"总经理");
+        // 调用mapper对象的selectList方法，将wrapper对象作为参数传递给该方法。该方法会根据提供的查询条件，从数据库中查询符合条件的记录，并将结果返回给list变量。
+        List<SysRole> list = mapper.selectList(wrapper);
+        System.out.println(wrapper);
     }
 }

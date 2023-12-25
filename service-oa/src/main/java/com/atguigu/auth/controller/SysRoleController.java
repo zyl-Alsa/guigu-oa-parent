@@ -4,6 +4,7 @@ import com.atguigu.auth.service.SysRoleService;
 import com.atguigu.common.config.exception.GuiguException;
 import com.atguigu.common.result.Result;
 import com.atguigu.model.system.SysRole;
+import com.atguigu.vo.system.AssginRoleVo;
 import com.atguigu.vo.system.SysRoleQueryVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -15,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "角色管理接口")
 @RestController   // @RestController 声明了一个RESTful风格的控制器，这意味着控制器的返回值将自动转换为HTTP响应体
@@ -24,6 +26,24 @@ public class SysRoleController {
     // 注入service
     @Autowired
     private SysRoleService sysRoleService;
+
+    // 1、查询所有角色 和 当前用户所属角色
+    @ApiOperation("获取角色")
+    @GetMapping("/toAssign/{userId}")
+    public Result toAssign(@PathVariable Long userId) {
+        Map<String,Object> map = sysRoleService.findRoleDataByUserId(userId);
+        return Result.ok(map);
+    }
+
+    // 2、为用户分配角色(要为用户id分配多个角色id）
+    @ApiOperation("为用户分配角色")
+    @PostMapping("/doAssign")
+    public Result doAssign(@RequestBody AssginRoleVo assginRoleVo) {
+        sysRoleService.doAssgin(assginRoleVo);
+        return  Result.ok();
+    }
+
+
 
     // 查询所有角色
 //    @GetMapping("/findAll")

@@ -9,6 +9,9 @@ import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
+/**
+ * 代码生成器
+ */
 public class CodeGet {
 
     public static void main(String[] args) {
@@ -48,7 +51,7 @@ public class CodeGet {
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
 
-        strategy.setInclude("sys_user"); // 指定表的名字
+        strategy.setInclude("sys_user_role"); // 指定表的名字
 
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
 

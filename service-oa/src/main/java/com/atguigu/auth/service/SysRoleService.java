@@ -12,7 +12,7 @@ public interface SysRoleService extends IService<SysRole> {
     Map<String, Object> findRoleDataByUserId(Long userId);
 
     // 2、为用户分配角色(要为用户id分配多个角色id）
-    void doAssgin(AssginRoleVo assginRoleVo);
+    void doAssign(AssginRoleVo assginRoleVo);
 
 
 }

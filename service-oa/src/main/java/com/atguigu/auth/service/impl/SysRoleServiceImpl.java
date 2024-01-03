@@ -19,6 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * 给用户分配角色
+ *
+ */
 @Service
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
 
@@ -36,13 +40,20 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         List<SysUserRole> existUserRoleList = sysUserRoleService.list(wrapper); // 当前用户角色所有的角色id：existUserRoleList
 
         // 从查询出来的用户id对应角色list集合，获取所有角色id
-        List<Long> existUserIdRoleList = existUserRoleList.stream().map(c ->c.getRoleId()).collect(Collectors.toList());
+//        List<Long> list = new ArrayList<>();
+//        for (SysUserRole sysUserRole:existUserRoleList) {
+//            Long roleId = sysUserRole.getRoleId();
+//            list.add(roleId);
+//        }
+
+        // =====> 简化版：
+        List<Long> existRoleIdList = existUserRoleList.stream().map(c ->c.getRoleId()).collect(Collectors.toList());
 
         // 3、根据查询所有角色id，找到对应角色信息。根据角色id到所有的角色的list集合进行比较
         List<SysRole> assignRoleList = new ArrayList<>();
         for(SysRole sysRole : allRoleList) {
             // 比较
-            if(existUserIdRoleList.contains(sysRole.getId())) {
+            if(existRoleIdList.contains(sysRole.getId())) {
                 assignRoleList.add(sysRole);
             }
         }
@@ -57,10 +68,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     // 二、为用户分配角色(要为用户id分配多个角色id）
     @Override
-    public void doAssgin(AssginRoleVo assginRoleVo) {
+    public void doAssign(AssginRoleVo assginRoleVo) {
         // 把用户之前分配角色数据删除，用户角色关系表里面，根据userid删除
         LambdaQueryWrapper<SysUserRole> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(SysUserRole::getUserId,assginRoleVo.getRoleIdList());
+        wrapper.eq(SysUserRole::getUserId,assginRoleVo.getUserId());
         sysUserRoleService.remove((wrapper));
 
         // 重新进行分配

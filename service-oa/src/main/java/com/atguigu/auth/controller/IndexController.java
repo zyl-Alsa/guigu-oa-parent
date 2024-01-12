@@ -11,6 +11,7 @@ import com.atguigu.vo.system.LoginVo;
 import com.atguigu.vo.system.RouterVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.Api;
+//import org.activiti.engine.RepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,7 +95,7 @@ public class IndexController {
     @GetMapping("info")
     public Result info(HttpServletRequest request) {
         // 1、从请求头获取用户信息（获取请求头token字符串）
-        String token = request.getHeader("header");
+        String token = request.getHeader("token");
         System.out.println(token);
 
 
@@ -105,7 +106,8 @@ public class IndexController {
 //        }
 
         // 2、从token字符串获取用户id 或者 用户名称
-        Long userId = 2L;  //JwtHelper.getUserId(token);
+        Long userId = JwtHelper.getUserId(token);
+//        Long userId = 1L;
         // 2L:用户id为2
 
         // 3、根据用户id查询数据库，把用户信息获取出来

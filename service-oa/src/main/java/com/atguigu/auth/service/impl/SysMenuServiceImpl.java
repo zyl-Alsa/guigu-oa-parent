@@ -203,8 +203,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             routers.add(router);
         }
 
-        System.out.println("******************");
-        System.out.println(routers);
+//        System.out.println("******************");
+//        System.out.println(routers);
 
         return routers;
     }
@@ -227,7 +227,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public List<String> findUserPermsByUserId(Long userId) {
         //1 判断是否是管理员，如果是管理员，查询所有按钮列表
-        System.out.println("******************");
+//        System.out.println("******************");
         List<SysMenu> sysMenuList = null;
         if(userId.longValue() == 1) {
             //查询所有菜单列表

@@ -1,7 +1,9 @@
 package com.atguigu.security.filter;
 
 import com.atguigu.common.jwt.JwtHelper;
+import com.atguigu.common.result.ResponseUtil;
 import com.atguigu.common.result.Result;
+import com.atguigu.common.result.ResultCodeEnum;
 import com.atguigu.security.custom.CustomUser;
 import com.atguigu.vo.system.LoginVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,7 +62,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         CustomUser customUser = (CustomUser)auth.getPrincipal();
 
         //生成token
-        JwtHelper.createToken(customUser.getSysUser().getId(),
+        String token = JwtHelper.createToken(customUser.getSysUser().getId(),
                 customUser.getSysUser().getUsername());
 
         //返回
@@ -73,7 +75,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
-
+        ResponseUtil.out(response,Result.build(null, ResultCodeEnum.LOGIN_ERROR));
     }
 
 
